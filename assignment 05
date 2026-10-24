@@ -1,0 +1,106 @@
+
+#include <iostream>
+#include <string>
+using namespace std;
+
+class Result;
+
+class Student
+{
+private:
+    int rollNo;
+    string name;
+    float marks;
+
+    static int count;
+
+public:
+    // Constructor using this pointer
+    Student(int rollNo, string name, float marks)
+    {
+        this->rollNo = rollNo;
+        this->name = name;
+        this->marks = marks;
+
+        count++;
+    }
+
+    // Inline function to display student details
+    inline void display()
+    {
+        cout << "\n--- Student Details ---" << endl;
+        cout << "Roll Number: " << rollNo << endl;
+        cout << "Name: " << name << endl;
+        cout << "Marks: " << marks << endl;
+    }
+
+    // Static member function
+    static void displayCount()
+    {
+        cout << "Total Students: " << count << endl;
+    }
+
+    // Friend class declaration
+    friend class Result;
+};
+
+// Initialize static data member
+int Student::count = 0;
+
+// Friend class
+class Result
+{
+public:
+    void displayResult(Student s)
+    {
+        cout << "\n--- Student Result ---" << endl;
+
+        cout << "Student Name: " << s.name << endl;
+        cout << "Roll Number: " << s.rollNo << endl;
+        cout << "Marks: " << s.marks << endl;
+
+        if (s.marks >= 40)
+            cout << "Result: Pass" << endl;
+        else
+            cout << "Result: Fail" << endl;
+    }
+};
+
+int main()
+{
+    int rollNo;
+    string name;
+    float marks;
+
+    cout << "Enter Roll Number: ";
+    cin >> rollNo;
+
+    cin.ignore(10000, '\n');
+
+    cout << "Enter Student Name: ";
+    getline(cin, name);
+
+    cout << "Enter Marks: ";
+    cin >> marks;
+
+    if (rollNo <= 0 || name.empty() || marks < 0 || marks > 100)
+    {
+        cout << "Invalid student details." << endl;
+        return 0;
+    }
+
+    // Create Student object
+    Student s(rollNo, name, marks);
+
+    // Display using inline function
+    s.display();
+
+    // Display total student count
+    Student::displayCount();
+
+    // Display result using friend class
+    Result r;
+    r.displayResult(s);
+
+    return 0;
+}

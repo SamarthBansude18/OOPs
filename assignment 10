@@ -1,0 +1,82 @@
+
+#include <iostream>
+#include <string>
+using namespace std;
+
+// Function template to find highest marks
+template <class T>
+T findMaximum(T a, T b, T c)
+{
+    T maximum = a;
+
+    if (b > maximum)
+        maximum = b;
+
+    if (c > maximum)
+        maximum = c;
+
+    return maximum;
+}
+
+// Class template for Student
+template <class T>
+class Student
+{
+private:
+    string name;
+    int rollNo;
+    T marks1, marks2, marks3;
+
+public:
+    // Function to accept student details
+    void input()
+    {
+        cout << "Enter Student Name: ";
+        getline(cin, name);
+
+        cout << "Enter Roll Number: ";
+        cin >> rollNo;
+
+        cout << "Enter marks in three subjects: ";
+        cin >> marks1 >> marks2 >> marks3;
+    }
+
+    // Function to calculate total marks
+    T calculateTotal()
+    {
+        return marks1 + marks2 + marks3;
+    }
+
+    // Function to calculate average marks
+    double calculateAverage()
+    {
+        return calculateTotal() / 3.0;
+    }
+
+    // Function to display student result
+    void display()
+    {
+        cout << "\n--- Student Result ---" << endl;
+        cout << "Student Name: " << name << endl;
+        cout << "Roll Number: " << rollNo << endl;
+        cout << "Marks in Subject 1: " << marks1 << endl;
+        cout << "Marks in Subject 2: " << marks2 << endl;
+        cout << "Marks in Subject 3: " << marks3 << endl;
+
+        cout << "Total Marks: " << calculateTotal() << endl;
+        cout << "Average Marks: " << calculateAverage() << endl;
+
+        cout << "Highest Marks: "
+             << findMaximum(marks1, marks2, marks3) << endl;
+    }
+};
+
+int main()
+{
+    Student<float> s;
+
+    s.input();
+    s.display();
+
+    return 0;
+}

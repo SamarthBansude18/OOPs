@@ -1,0 +1,212 @@
+
+#include <iostream>
+#include <string>
+#include <list>
+#include <vector>
+using namespace std;
+
+class Book
+{
+public:
+    int id;
+    string title;
+    string author;
+    float price;
+};
+
+int main()
+{
+    list<Book> books;
+    vector<float> prices;
+
+    int choice;
+
+    do
+    {
+        cout << "\n===== Library Book Management System =====" << endl;
+        cout << "1. Add Book" << endl;
+        cout << "2. Display Books" << endl;
+        cout << "3. Search Book" << endl;
+        cout << "4. Delete Book" << endl;
+        cout << "5. Calculate Average Price" << endl;
+        cout << "6. Exit" << endl;
+        cout << "Enter your choice: ";
+        cin >> choice;
+
+        switch (choice)
+        {
+        case 1:
+        {
+            Book b;
+
+            cout << "Enter Book ID: ";
+            cin >> b.id;
+
+            // Check duplicate book ID
+            bool exists = false;
+
+            for (list<Book>::iterator it = books.begin();
+                 it != books.end(); ++it)
+            {
+                if (it->id == b.id)
+                {
+                    exists = true;
+                    break;
+                }
+            }
+
+            if (exists)
+            {
+                cout << "Error: Book ID already exists." << endl;
+                break;
+            }
+
+            cin.ignore(10000, '\n');
+
+            cout << "Enter Book Title: ";
+            getline(cin, b.title);
+
+            cout << "Enter Author Name: ";
+            getline(cin, b.author);
+
+            cout << "Enter Book Price: ";
+            cin >> b.price;
+
+            if (b.title.empty() || b.author.empty() || b.price < 0)
+            {
+                cout << "Error: Invalid book details." << endl;
+                break;
+            }
+
+            books.emplace_back(b);
+            prices.push_back(b.price);
+
+            cout << "Book added successfully." << endl;
+            break;
+        }
+
+        case 2:
+        {
+            if (books.empty())
+            {
+                cout << "No books available." << endl;
+                break;
+            }
+
+            cout << "\n--- Book Details ---" << endl;
+
+            list<Book>::iterator it = books.begin();
+            vector<float>::iterator pit = prices.begin();
+
+            while (it != books.end() && pit != prices.end())
+            {
+                cout << "Book ID: " << it->id << endl;
+                cout << "Title: " << it->title << endl;
+                cout << "Author: " << it->author << endl;
+                cout << "Price: " << *pit << endl;
+                cout << "------------------------" << endl;
+
+                ++it;
+                ++pit;
+            }
+
+            break;
+        }
+
+        case 3:
+        {
+            int searchID;
+            bool found = false;
+
+            cout << "Enter Book ID to search: ";
+            cin >> searchID;
+
+            for (list<Book>::iterator it = books.begin();
+                 it != books.end(); ++it)
+            {
+                if (it->id == searchID)
+                {
+                    cout << "\nBook details displayed correctly." << endl;
+                    cout << "Book ID: " << it->id << endl;
+                    cout << "Title: " << it->title << endl;
+                    cout << "Author: " << it->author << endl;
+                    cout << "Price: " << it->price << endl;
+
+                    found = true;
+                    break;
+                }
+            }
+
+            if (!found)
+                cout << "Book not found." << endl;
+
+            break;
+        }
+
+        case 4:
+        {
+            int deleteID;
+            bool found = false;
+
+            cout << "Enter Book ID to delete: ";
+            cin >> deleteID;
+
+            list<Book>::iterator it = books.begin();
+            vector<float>::iterator pit = prices.begin();
+
+            while (it != books.end())
+            {
+                if (it->id == deleteID)
+                {
+                    books.erase(it);
+                    prices.erase(pit);
+
+                    cout << "Book deleted successfully." << endl;
+                    found = true;
+                    break;
+                }
+
+                ++it;
+                ++pit;
+            }
+
+            if (!found)
+                cout << "Book not found." << endl;
+
+            break;
+        }
+
+        case 5:
+        {
+            if (prices.empty())
+            {
+                cout << "No book prices available." << endl;
+                break;
+            }
+
+            float total = 0;
+
+            for (vector<float>::iterator it = prices.begin();
+                 it != prices.end(); ++it)
+            {
+                total += *it;
+            }
+
+            float average = total / prices.size();
+
+            cout << "Average book price: " << average << endl;
+            break;
+        }
+
+        case 6:
+            cout << "Exiting Library Book Management System." << endl;
+            break;
+
+        default:
+            cout << "Invalid choice. Please try again." << endl;
+        }
+
+    } while (choice != 6);
+
+    return 0;
+}

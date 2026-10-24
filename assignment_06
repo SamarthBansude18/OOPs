@@ -1,0 +1,168 @@
+
+#include <iostream>
+using namespace std;
+
+// Base class
+class Person {
+protected:
+    string name;
+
+public:
+    Person(string n) {
+        name = n;
+        cout << "Person constructor called" << endl;
+    }
+
+    void displayName() {
+        cout << "Name: " << name << endl;
+    }
+
+    ~Person() {
+        cout << "Person destructor called" << endl;
+    }
+};
+
+// Single inheritance
+class Student : public Person {
+protected:
+    int rollNo;
+
+public:
+    Student(string n, int r) : Person(n) {
+        rollNo = r;
+        cout << "Student constructor called" << endl;
+    }
+
+    void displayStudent() {
+        displayName();
+        cout << "Roll Number: " << rollNo << endl;
+    }
+
+    ~Student() {
+        cout << "Student destructor called" << endl;
+    }
+};
+
+// Hierarchical inheritance
+class Teacher : public Person {
+private:
+    string subject;
+
+public:
+    Teacher(string n, string s) : Person(n) {
+        subject = s;
+        cout << "Teacher constructor called" << endl;
+    }
+
+    void displayTeacher() {
+        cout << "\nTeacher Details" << endl;
+        displayName();
+        cout << "Subject: " << subject << endl;
+    }
+
+    ~Teacher() {
+        cout << "Teacher destructor called" << endl;
+    }
+};
+
+// Multilevel inheritance
+class Exam : public Student {
+protected:
+    float marks;
+
+public:
+    Exam(string n, int r, float m) : Student(n, r) {
+        marks = m;
+        cout << "Exam constructor called" << endl;
+    }
+
+    void displayMarks() {
+        cout << "Marks: " << marks << endl;
+    }
+
+    ~Exam() {
+        cout << "Exam destructor called" << endl;
+    }
+};
+
+// Base class for multiple inheritance
+class Sports {
+protected:
+    float sportsPoints;
+
+public:
+    Sports(float p) {
+        sportsPoints = p;
+        cout << "Sports constructor called" << endl;
+    }
+
+    void displaySports() {
+        cout << "Sports Points: " << sportsPoints << endl;
+    }
+
+    ~Sports() {
+        cout << "Sports destructor called" << endl;
+    }
+};
+
+// Multiple and hybrid inheritance
+class Result : public Exam, public Sports {
+public:
+    Result(string n, int r, float m, float p)
+        : Exam(n, r, m), Sports(p) {
+        cout << "Result constructor called" << endl;
+    }
+
+    void displayResult() {
+        cout << "\n----- STUDENT RESULT -----" << endl;
+        displayStudent();
+        displayMarks();
+        displaySports();
+
+        if (marks >= 40) {
+            cout << "Result: PASS" << endl;
+        } else {
+            cout << "Result: FAIL" << endl;
+        }
+    }
+
+    ~Result() {
+        cout << "Result destructor called" << endl;
+    }
+};
+
+int main() {
+    string studentName, teacherName, subject;
+    int rollNo;
+    float marks, points;
+
+    cout << "Enter Student Name: ";
+    getline(cin, studentName);
+
+    cout << "Enter Roll Number: ";
+    cin >> rollNo;
+
+    cout << "Enter Exam Marks: ";
+    cin >> marks;
+
+    cout << "Enter Sports Points: ";
+    cin >> points;
+
+    cin.ignore();
+
+    cout << "\nEnter Teacher Name: ";
+    getline(cin, teacherName);
+
+    cout << "Enter Teacher Subject: ";
+    getline(cin, subject);
+
+    {
+        Result r(studentName, rollNo, marks, points);
+        Teacher t(teacherName, subject);
+
+        r.displayResult();
+        t.displayTeacher();
+    }
+
+    return 0;
+}

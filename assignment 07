@@ -1,0 +1,114 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+// Base class
+class Person {
+public:
+    virtual void display() {
+        cout << "Person Details" << endl;
+    }
+
+    virtual ~Person() {}
+};
+
+// Student class
+class Student : public Person {
+private:
+    string name;
+    int rollNo;
+    string course;
+
+public:
+    Student(string n, int r, string c) {
+        name = n;
+        rollNo = r;
+        course = c;
+    }
+
+    // Function overloading: compile-time polymorphism
+    void displayInfo(string n) {
+        cout << "\nStudent Name: " << n << endl;
+    }
+
+    void displayInfo(string n, string c) {
+        cout << "Student Name: " << n << endl;
+        cout << "Course: " << c << endl;
+    }
+
+    // Function overriding: runtime polymorphism
+    void display() override {
+        cout << "\n--- Student Details ---" << endl;
+        cout << "Name: " << name << endl;
+        cout << "Roll Number: " << rollNo << endl;
+        cout << "Course: " << course << endl;
+    }
+};
+
+// Teacher class
+class Teacher : public Person {
+private:
+    string name;
+    string subject;
+
+public:
+    Teacher(string n, string s) {
+        name = n;
+        subject = s;
+    }
+
+    // Function overriding
+    void display() override {
+        cout << "\n--- Teacher Details ---" << endl;
+        cout << "Name: " << name << endl;
+        cout << "Subject: " << subject << endl;
+    }
+};
+
+int main() {
+    string studentName, course;
+    string teacherName, subject;
+    int rollNo;
+
+    cout << "Enter Student Name: ";
+    getline(cin, studentName);
+
+    cout << "Enter Roll Number: ";
+    cin >> rollNo;
+    cin.ignore();
+
+    if (rollNo <= 0) {
+        cout << "Invalid Roll Number!" << endl;
+        return 0;
+    }
+
+    cout << "Enter Student Course: ";
+    getline(cin, course);
+
+    cout << "Enter Teacher Name: ";
+    getline(cin, teacherName);
+
+    cout << "Enter Teacher Subject: ";
+    getline(cin, subject);
+
+    Student s(studentName, rollNo, course);
+    Teacher t(teacherName, subject);
+
+    // Compile-time polymorphism
+    cout << "\n=== Function Overloading ===" << endl;
+    s.displayInfo(studentName);
+    s.displayInfo(studentName, course);
+
+    // Runtime polymorphism
+    cout << "\n=== Runtime Polymorphism ===" << endl;
+
+    Person *ptr;
+
+    ptr = &s;
+    ptr->display();
+
+    ptr = &t;
+    ptr->display();
+
+    return 0;
+}

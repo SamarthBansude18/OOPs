@@ -1,0 +1,77 @@
+
+#include <iostream>
+#include <string>
+#include <utility>
+using namespace std;
+
+class Student {
+private:
+    string name;
+    string course;
+    string prn;
+
+public:
+    // Parameterized constructor
+    Student(string n, string c, string p)
+        : name(move(n)), course(move(c)), prn(move(p)) {
+        cout << "Student object created." << endl;
+    }
+
+    // Move constructor
+    Student(Student&& other) noexcept
+        : name(move(other.name)),
+          course(move(other.course)),
+          prn(move(other.prn)) {
+        cout << "Move constructor called." << endl;
+    }
+
+    // Display student details
+    void display() const {
+        cout << "Name: " << name << endl;
+        cout << "Course: " << course << endl;
+        cout << "PRN: " << prn << endl;
+    }
+
+    bool isEmpty() const {
+        return name.empty() || course.empty() || prn.empty();
+    }
+};
+
+int main() {
+    string name, course, prn;
+
+    cout << "Enter Student Name: ";
+    getline(cin, name);
+
+    cout << "Enter Course: ";
+    getline(cin, course);
+
+    cout << "Enter PRN: ";
+    getline(cin, prn);
+
+    // Validate input
+    if (name.empty() || course.empty() || prn.empty()) {
+        cout << "Error: Student details cannot be empty."
+             << endl;
+        return 0;
+    }
+
+    // Create temporary student object
+    Student temp(name, course, prn);
+
+    cout << "\n--- Student Details Before Transfer ---"
+         << endl;
+    temp.display();
+
+    // Transfer details using std::move
+    Student permanent(move(temp));
+
+    cout << "\n--- Student Details After Transfer ---"
+         << endl;
+    permanent.display();
+
+    cout << "\nStudent record transferred successfully."
+         << endl;
+
+    return 0;
+}

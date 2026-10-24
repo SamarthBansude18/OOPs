@@ -1,0 +1,91 @@
+
+#include <iostream>
+using namespace std;
+
+int main()
+{
+    int choice;
+    double value;
+
+    do
+    {
+        cout << "\n===== Unit Conversion System =====" << endl;
+        cout << "1. Celsius to Fahrenheit" << endl;
+        cout << "2. Kilometers to Meters" << endl;
+        cout << "3. Decimal to Integer using static_cast" << endl;
+        cout << "4. Double to Integer using C-style casting" << endl;
+        cout << "5. Exit" << endl;
+
+        cout << "Enter your choice: ";
+        cin >> choice;
+
+        switch (choice)
+        {
+        case 1:
+        {
+            cout << "Enter temperature in Celsius: ";
+            cin >> value;
+
+            double fahrenheit = (value * 9.0 / 5.0) + 32;
+
+            cout << "Temperature in Fahrenheit: "
+                 << fahrenheit << " F" << endl;
+            break;
+        }
+
+        case 2:
+        {
+            cout << "Enter distance in kilometers: ";
+            cin >> value;
+
+            if (value < 0)
+            {
+                cout << "Invalid distance." << endl;
+            }
+            else
+            {
+                // Implicit type conversion
+                double meters = value * 1000;
+
+                cout << "Distance in meters: "
+                     << meters << " m" << endl;
+            }
+            break;
+        }
+
+        case 3:
+        {
+            cout << "Enter a decimal value: ";
+            cin >> value;
+
+            int result = static_cast<int>(value);
+
+            cout << "Integer value using static_cast: "
+                 << result << endl;
+            break;
+        }
+
+        case 4:
+        {
+            cout << "Enter a decimal value: ";
+            cin >> value;
+
+            int result = (int)value;
+
+            cout << "Integer value using C-style cast: "
+                 << result << endl;
+            break;
+        }
+
+        case 5:
+            cout << "Exiting Unit Conversion System." << endl;
+            break;
+
+        default:
+            cout << "Invalid choice. Select 1-5." << endl;
+        }
+
+    } while (choice != 5);
+
+    return 0;
+}
